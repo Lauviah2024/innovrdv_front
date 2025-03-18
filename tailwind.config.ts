@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Clinic specific colors
+				clinic: {
+					primary: '#3B82F6', // Blue
+					secondary: '#EFF6FF', // Light blue
+					accent: '#1D4ED8', // Dark blue
+					light: '#F9FAFB', // Near white
+					dark: '#1E293B', // Dark slate
 				}
 			},
 			borderRadius: {
@@ -84,12 +93,55 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' }
+                },
+                'fade-in-up': {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' }
+                },
+                'pulse-soft': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.8' }
+                },
+                'scale-in': {
+                    '0%': { transform: 'scale(0.95)', opacity: '0' },
+                    '100%': { transform: 'scale(1)', opacity: '1' }
+                },
+                'slide-in-right': {
+                    '0%': { transform: 'translateX(100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' }
+                },
+                'slide-in-left': {
+                    '0%': { transform: 'translateX(-100%)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.5s ease-out',
+                'fade-in-up': 'fade-in-up 0.5s ease-out',
+                'pulse-soft': 'pulse-soft 2s infinite ease-in-out',
+                'scale-in': 'scale-in 0.3s ease-out',
+                'slide-in-right': 'slide-in-right 0.4s ease-out',
+                'slide-in-left': 'slide-in-left 0.4s ease-out'
+			},
+            boxShadow: {
+                'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
+                'glass': '0 8px 32px rgba(0, 0, 0, 0.06)',
+                'glass-hover': '0 8px 32px rgba(0, 0, 0, 0.1)',
+                'button': '0 4px 14px rgba(59, 130, 246, 0.3)',
+            },
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                heading: ['Inter', 'sans-serif']
+            },
+            transitionTimingFunction: {
+                'spring': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
