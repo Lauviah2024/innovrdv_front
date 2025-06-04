@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,9 +40,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link 
           to="/" 
-          className="flex items-center gap-2 font-heading font-bold text-2xl text-clinic-accent transition-opacity duration-200 hover:opacity-80"
+          className="flex items-center gap-2 font-heading font-bold text-2xl text-[#e83e8c] transition-opacity duration-200 hover:opacity-80"
         >
-          <span className="text-clinic-primary">Clinic</span>RDV
+          <span className="text-[#e83e8c]">InnovRDV</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -51,9 +52,9 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={cn(
-                'font-medium text-sm transition-all duration-200 hover:text-clinic-primary relative py-2',
+                'font-medium text-sm transition-all duration-200 hover:text-[#e83e8c] relative py-2',
                 isActive(link.path) 
-                  ? 'text-clinic-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-clinic-primary after:rounded-full' 
+                  ? 'text-[#e83e8c] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#e83e8c] after:rounded-full' 
                   : 'text-clinic-dark/80'
               )}
             >
@@ -64,8 +65,15 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-4">
           <Link
-            to="/appointment"
-            className="px-6 py-2 bg-clinic-primary text-white rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
+            to="/auth/login"
+            className="px-6 py-2 border border-[#e83e8c] text-[#e83e8c] rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
+          >
+            Se connecter
+          </Link>
+         
+          <Link
+            to="/appointment "
+            className="px-6 py-2 bg-[#e83e8c] text-white rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
           >
             Prendre rendez-vous
           </Link>
@@ -92,7 +100,7 @@ const Navbar = () => {
                 className={cn(
                   'py-3 px-4 rounded-lg font-medium transition-colors',
                   isActive(link.path) 
-                    ? 'bg-clinic-secondary text-clinic-primary' 
+                    ? 'bg-clinic-secondary text-[#e83e8c]' 
                     : 'text-clinic-dark hover:bg-gray-50'
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -102,11 +110,18 @@ const Navbar = () => {
             ))}
             <Link
               to="/appointment"
-              className="py-3 px-4 bg-clinic-primary text-white rounded-lg font-medium shadow-sm"
+              className="py-3 px-4 bg-[#e83e8c] text-white rounded-lg font-medium shadow-sm"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Prendre rendez-vous
             </Link>
+            <Link
+            to="/auth/login"
+            className="px-6 py-2 border border-[#e83e8c] text-[#e83e8c] rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
+          >
+            Se connecter
+          </Link>
+         
           </div>
         </div>
       )}

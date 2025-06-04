@@ -32,7 +32,7 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
         />
         
         {availability && (
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-clinic-primary text-xs font-medium py-1 px-2 rounded-full">
+          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-[#e83e8c] text-xs font-medium py-1 px-2 rounded-full">
             {availability}
           </div>
         )}
@@ -52,7 +52,7 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
         
         <Link 
           to={`/appointment?doctor=${id}`} 
-          className="w-full flex items-center justify-center gap-2 py-2 bg-clinic-primary text-white rounded-lg shadow-sm hover:shadow-button transition-all duration-300"
+          className="w-full flex items-center justify-center gap-2 py-2 bg-[#e83e8c] text-white rounded-lg shadow-sm hover:shadow-button transition-all duration-300"
         >
           <Calendar size={16} />
           <span>Prendre RDV</span>

@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Search, Heart, Brain, Stethoscope, Thermometer, User, Clipboard, Filter } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import DoctorCard from '@/components/DoctorCard';
+import Footer from '@/components/Footer';
 
 // Mock Data
 const doctorsMockData = [
@@ -188,7 +189,7 @@ const Doctors = () => {
                 <button
                   className={`py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
                     selectedSpecialty === null
-                      ? 'bg-clinic-primary text-white'
+                      ? 'bg-[#e83e8c] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                   onClick={() => setSelectedSpecialty(null)}
@@ -201,7 +202,7 @@ const Doctors = () => {
                     key={specialty.id}
                     className={`flex items-center gap-2 py-2 px-4 rounded-full text-sm font-medium transition-colors duration-200 ${
                       selectedSpecialty === specialty.id
-                        ? 'bg-clinic-primary text-white'
+                        ? 'bg-[#e83e8c] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                     onClick={() => setSelectedSpecialty(specialty.id)}
@@ -242,19 +243,7 @@ const Doctors = () => {
       </main>
       
       {/* Footer */}
-      <footer className="bg-white border-t py-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="flex justify-center items-center gap-2 font-heading font-bold text-2xl mb-4">
-              <span className="text-clinic-primary">Clinic</span>
-              <span className="text-clinic-accent">RDV</span>
-            </div>
-            <p className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} ClinicRDV - Tous droits réservés
-            </p>
-          </div>
-        </div>
-      </footer>
+    <Footer/>
     </div>
   );
 };

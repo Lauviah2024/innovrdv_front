@@ -30,7 +30,7 @@ const SpecialtyCard: React.FC<SpecialtyCardProps> = ({
           </div>
           
           <div className="flex-1">
-            <h3 className="font-semibold text-clinic-dark group-hover:text-clinic-primary transition-colors duration-200">
+            <h3 className="font-semibold text-clinic-dark group-hover:text-[#e83e8c] transition-colors duration-200">
               {name}
             </h3>
             <p className="text-sm text-gray-500 mt-1">

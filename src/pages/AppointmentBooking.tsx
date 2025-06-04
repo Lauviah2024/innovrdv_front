@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import AppointmentCalendar from '@/components/AppointmentCalendar';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import Footer from '@/components/Footer';
 
 // Reusing the mock data from the Doctors page
 const doctorsMockData = [
@@ -187,7 +188,7 @@ const AppointmentBooking = () => {
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 max-w-2xl mx-auto animate-fade-in-up">
-            <h1 className="text-3xl md:text-4xl font-bold text-clinic-dark mb-4">Prendre rendez-vous</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-[#e83e8c] mb-4">Prendre rendez-vous</h1>
             <p className="text-gray-600">
               Réservez votre créneau en quelques étapes simples
             </p>
@@ -201,7 +202,7 @@ const AppointmentBooking = () => {
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       currentStep >= step.id 
-                        ? 'bg-clinic-primary text-white' 
+                        ? 'bg-[#e83e8c] text-white' 
                         : 'bg-gray-200 text-gray-600'
                     }`}>
                       {step.id}
@@ -211,7 +212,7 @@ const AppointmentBooking = () => {
                   
                   {index < steps.length - 1 && (
                     <div className={`w-20 h-1 mx-2 ${
-                      currentStep > step.id ? 'bg-clinic-primary' : 'bg-gray-200'
+                      currentStep > step.id ? 'bg-[#e83e8c]' : 'bg-gray-200'
                     }`} />
                   )}
                 </React.Fragment>
@@ -224,7 +225,7 @@ const AppointmentBooking = () => {
                 <button 
                   onClick={goToPreviousStep}
                   disabled={currentStep === 1}
-                  className={`p-2 ${currentStep === 1 ? 'text-gray-300' : 'text-clinic-primary'}`}
+                  className={`p-2 ${currentStep === 1 ? 'text-gray-300' : 'text-[#e83e8c]'}`}
                 >
                   <ArrowLeft size={20} />
                 </button>
@@ -249,8 +250,8 @@ const AppointmentBooking = () => {
                       key={doctor.id}
                       className={`cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
                         selectedDoctor?.id === doctor.id 
-                          ? 'border-clinic-primary bg-clinic-secondary' 
-                          : 'border-gray-200 hover:border-clinic-primary'
+                          ? 'border-[#e83e8c] bg-clinic-secondary' 
+                          : 'border-gray-200 hover:border-[#e83e8c]'
                       }`}
                       onClick={() => handleDoctorSelect(doctor)}
                     >
@@ -287,7 +288,7 @@ const AppointmentBooking = () => {
                       <div className="text-gray-500">{selectedDoctor.specialty}</div>
                     </div>
                     <button 
-                      className="ml-auto text-clinic-primary hover:underline"
+                      className="ml-auto text-[#e83e8c] hover:underline"
                       onClick={() => setCurrentStep(1)}
                     >
                       Modifier
@@ -305,7 +306,7 @@ const AppointmentBooking = () => {
                     Précédent
                   </button>
                   <button 
-                    className={`px-6 py-2 bg-clinic-primary text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] ${
+                    className={`px-6 py-2 bg-[#e83e8c] text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] ${
                       !isStepComplete() ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                     onClick={goToNextStep}
@@ -333,7 +334,7 @@ const AppointmentBooking = () => {
                             type="text"
                             name="firstName"
                             required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-clinic-primary focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                             placeholder="Votre prénom"
                             value={formData.firstName}
                             onChange={handleInputChange}
@@ -348,7 +349,7 @@ const AppointmentBooking = () => {
                             type="text"
                             name="lastName"
                             required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-clinic-primary focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                             placeholder="Votre nom"
                             value={formData.lastName}
                             onChange={handleInputChange}
@@ -363,7 +364,7 @@ const AppointmentBooking = () => {
                             type="email"
                             name="email"
                             required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-clinic-primary focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                             placeholder="votre.email@exemple.com"
                             value={formData.email}
                             onChange={handleInputChange}
@@ -378,7 +379,7 @@ const AppointmentBooking = () => {
                             type="tel"
                             name="phone"
                             required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-clinic-primary focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                             placeholder="Votre numéro de téléphone"
                             value={formData.phone}
                             onChange={handleInputChange}
@@ -392,7 +393,7 @@ const AppointmentBooking = () => {
                       <textarea
                         name="reason"
                         rows={4}
-                        className="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-clinic-primary focus:border-transparent"
+                        className="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                         placeholder="Décrivez brièvement la raison de votre visite..."
                         value={formData.reason}
                         onChange={handleInputChange}
@@ -409,7 +410,7 @@ const AppointmentBooking = () => {
                       </button>
                       <button 
                         type="submit"
-                        className={`px-6 py-2 bg-clinic-primary text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] ${
+                        className={`px-6 py-2 bg-[#e83e8c] text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] ${
                           !isStepComplete() ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                         disabled={!isStepComplete()}
@@ -442,7 +443,7 @@ const AppointmentBooking = () => {
                     </div>
                     
                     <div className="flex items-center gap-2 mb-2">
-                      <CalendarCheck size={18} className="text-clinic-primary" />
+                      <CalendarCheck size={18} className="text-[#e83e8c]" />
                       <span className="text-clinic-dark">
                         {format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })} à {selectedTime}
                       </span>
@@ -465,15 +466,15 @@ const AppointmentBooking = () => {
                     <h3 className="font-medium mb-2">Informations importantes:</h3>
                     <ul className="text-sm text-gray-600 space-y-2">
                       <li className="flex items-start gap-2">
-                        <ChevronRight size={16} className="text-clinic-primary mt-0.5 flex-shrink-0" />
+                        <ChevronRight size={16} className="text-[#e83e8c] mt-0.5 flex-shrink-0" />
                         <span>Veuillez arriver 15 minutes avant l'heure de votre rendez-vous.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <ChevronRight size={16} className="text-clinic-primary mt-0.5 flex-shrink-0" />
+                        <ChevronRight size={16} className="text-[#e83e8c] mt-0.5 flex-shrink-0" />
                         <span>Apportez votre carte d'assurance maladie et toute ordonnance médicale pertinente.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <ChevronRight size={16} className="text-clinic-primary mt-0.5 flex-shrink-0" />
+                        <ChevronRight size={16} className="text-[#e83e8c] mt-0.5 flex-shrink-0" />
                         <span>En cas d'empêchement, veuillez annuler votre rendez-vous au moins 24 heures à l'avance.</span>
                       </li>
                     </ul>
@@ -487,7 +488,7 @@ const AppointmentBooking = () => {
                       Précédent
                     </button>
                     <button 
-                      className="px-8 py-3 bg-clinic-primary text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] font-medium"
+                      className="px-8 py-3 bg-[#e83e8c] text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] font-medium"
                       onClick={handleSubmit}
                     >
                       Confirmer le rendez-vous
@@ -501,19 +502,7 @@ const AppointmentBooking = () => {
       </main>
       
       {/* Footer */}
-      <footer className="bg-white border-t py-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="flex justify-center items-center gap-2 font-heading font-bold text-2xl mb-4">
-              <span className="text-clinic-primary">Clinic</span>
-              <span className="text-clinic-accent">RDV</span>
-            </div>
-            <p className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} ClinicRDV - Tous droits réservés
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Calendar, CheckCircle, HomeIcon, ArrowRight, Phone } from 'lucide-react
 import Navbar from '@/components/Navbar';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import Footer from '@/components/Footer';
 
 const Confirmation = () => {
   const location = useLocation();
@@ -178,19 +179,7 @@ const Confirmation = () => {
       </main>
       
       {/* Footer */}
-      <footer className="bg-white border-t py-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="flex justify-center items-center gap-2 font-heading font-bold text-2xl mb-4">
-              <span className="text-clinic-primary">Clinic</span>
-              <span className="text-clinic-accent">RDV</span>
-            </div>
-            <p className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} ClinicRDV - Tous droits réservés
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };
