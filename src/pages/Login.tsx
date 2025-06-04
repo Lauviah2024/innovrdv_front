@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Phone, Lock, Mail, Calendar, Briefcase, MoveLeft } from 'lucide-react';
+import { User, Phone, Lock, Mail, Calendar, Briefcase, MoveLeft, MoveRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -45,7 +45,10 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-                             <MoveLeft onClick={()=>navigate(-1)} className="cursor-pointer" />
+            <div className="flex justify-between">
+                  <MoveLeft onClick={()=>navigate(-1)} className="cursor-pointer"/>
+                 <MoveRight onClick={()=> navigate("/profile")} className="cursor-pointer"/>
+            </div>
 
           <CardTitle className="text-2xl font-bold text-[#e83e8c]">
             Innov RDV
