@@ -22,10 +22,10 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { name: 'Accueil', path: '/' },
-    { name: 'Médecins', path: '/doctors' },
-    { name: 'Rendez-vous', path: '/appointment' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Prendre rendez-vous', path: '/' },
+    { name: 'Accueil', path: 'https://cliniquelanoel.org/' },
+    
+    
   ];
 
   return (
@@ -71,12 +71,7 @@ const Navbar = () => {
             Se connecter
           </Link>
          
-          <Link
-            to="/appointment "
-            className="px-6 py-2 bg-[#e83e8c] text-white rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
-          >
-            Prendre rendez-vous
-          </Link>
+         
         </div>
 
         {/* Mobile Menu Toggle */}

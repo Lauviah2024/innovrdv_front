@@ -48,7 +48,7 @@ const Confirmation = () => {
             
             <div className="bg-white rounded-xl shadow-soft overflow-hidden animate-scale-in">
               {/* Confirmation Header */}
-              <div className="bg-clinic-primary text-white p-6">
+              <div className="bg-[#e83e8c] text-white p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <Calendar className="w-5 h-5" />
                   <h2 className="text-xl font-semibold">Détails du rendez-vous</h2>
@@ -108,7 +108,7 @@ const Confirmation = () => {
                         href="https://maps.google.com" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-sm text-clinic-primary hover:underline"
+                        className="flex items-center gap-1 text-sm text-[#e83e8c] hover:underline"
                       >
                         <HomeIcon className="w-4 h-4" />
                         <span>Voir sur la carte</span>
@@ -116,7 +116,7 @@ const Confirmation = () => {
                       </a>
                       <a 
                         href="tel:+33123456789" 
-                        className="flex items-center gap-1 text-sm text-clinic-primary hover:underline"
+                        className="flex items-center gap-1 text-sm text-[#e83e8c] hover:underline"
                       >
                         <Phone className="w-4 h-4" />
                         <span>Appeler la clinique</span>
@@ -130,19 +130,19 @@ const Confirmation = () => {
                   <h3 className="font-medium mb-3">Rappels importants</h3>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-start gap-2">
-                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-clinic-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-[#e83e8c] flex items-center justify-center flex-shrink-0 mt-0.5">
                         1
                       </div>
                       <span>Arrivez 15 minutes avant l'heure de votre rendez-vous pour les formalités administratives.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-clinic-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-[#e83e8c] flex items-center justify-center flex-shrink-0 mt-0.5">
                         2
                       </div>
                       <span>Apportez votre carte d'assurance maladie et toute ordonnance médicale pertinente.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-clinic-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-clinic-secondary text-[#e83e8c] flex items-center justify-center flex-shrink-0 mt-0.5">
                         3
                       </div>
                       <span>Si vous ne pouvez pas vous présenter, veuillez annuler votre rendez-vous au moins 24 heures à l'avance.</span>
@@ -166,7 +166,7 @@ const Confirmation = () => {
                     </Link>
                     <button
                       onClick={() => window.print()}
-                      className="px-6 py-2 bg-clinic-primary text-white rounded-lg shadow-sm hover:shadow-button transition-all duration-300 text-center"
+                      className="px-6 py-2 bg-[#e83e8c] text-white rounded-lg shadow-sm hover:shadow-button transition-all duration-300 text-center"
                     >
                       Imprimer la confirmation
                     </button>

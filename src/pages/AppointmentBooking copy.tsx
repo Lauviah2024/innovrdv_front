@@ -94,20 +94,10 @@ const doctorsMockData = [
 
 // Steps for the booking process
 const steps = [
-  { id: 1, name: 'Spécialité' },
-  { id: 2, name: 'Sélection du médecin' },
-  { id: 3, name: 'Date et heure' },
-  { id: 4, name: 'Informations personnelles' },
-  { id: 5, name: 'Confirmation' }
-];
-
-const specialties = [
-  { id: 'cardiology', name: 'Cardiologie' },
-  { id: 'neurology', name: 'Neurologie' },
-  { id: 'general', name: 'Médecine générale' },
-  { id: 'pediatrics', name: 'Pédiatrie' },
-  { id: 'dermatology', name: 'Dermatologie' },
-  { id: 'psychiatry', name: 'Psychiatrie' },
+  { id: 1, name: 'Sélection du médecin' },
+  { id: 2, name: 'Date et heure' },
+  { id: 3, name: 'Informations personnelles' },
+  { id: 4, name: 'Confirmation' }
 ];
 
 const AppointmentBooking = () => {
@@ -133,21 +123,14 @@ const AppointmentBooking = () => {
       const doctor = doctorsMockData.find(d => d.id === doctorId);
       if (doctor) {
         setSelectedDoctor(doctor);
-        setSelectedSpecialty(doctor.specialtyId);
-        setCurrentStep(3);
+        setCurrentStep(2);
       }
     }
   }, [searchParams]);
 
-  const handleSpecialtySelect = (id: string) => {
-    setSelectedSpecialty(id);
-    setSelectedDoctor(null);
-    setCurrentStep(2);
-  };
-
   const handleDoctorSelect = (doctor: typeof doctorsMockData[0]) => {
     setSelectedDoctor(doctor);
-    setCurrentStep(3);
+    setCurrentStep(2);
   };
 
   const handleDateTimeSelect = (date: Date | undefined, time: string | undefined) => {
@@ -190,12 +173,10 @@ const AppointmentBooking = () => {
   const isStepComplete = () => {
     switch (currentStep) {
       case 1:
-        return selectedSpecialty !== null;
+        return selectedDoctor !== null;
       case 2:
-         return selectedDoctor !== null;
-      case 3:
         return selectedDate !== undefined && selectedTime !== undefined;
-      case 4:
+      case 3:
         return formData.firstName && formData.lastName && formData.email && formData.phone;
       default:
         return false;
@@ -261,33 +242,7 @@ const AppointmentBooking = () => {
           {/* Step content */}
           <div className="max-w-4xl mx-auto">
             {/* Step 1: Doctor Selection */}
-          {currentStep === 1 && (
-              <div className="bg-white rounded-xl shadow-soft p-6 animate-fade-in-up">
-                <h2 className="text-xl font-semibold mb-4">Choisissez une Spécialité</h2>
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {specialties.map((specialty) => (
-                    <div 
-                      key={specialty.id}
-                      className={`cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
-                        selectedDoctor?.id === specialty.id 
-                          ? 'border-[#e83e8c] bg-clinic-secondary' 
-                          : 'border-gray-200 hover:border-[#e83e8c]'
-                      }`}
-                      onClick={() => handleSpecialtySelect(specialty.id)}
-                    >
-                      <div className="flex items-center space-x-3">
-                        
-                        <div>
-                          <div className="font-medium">{specialty.name}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {currentStep === 2 && (
+            {currentStep === 1 && (
               <div className="bg-white rounded-xl shadow-soft p-6 animate-fade-in-up">
                 <h2 className="text-xl font-semibold mb-4">Choisissez un médecin</h2>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -315,29 +270,11 @@ const AppointmentBooking = () => {
                     </div>
                   ))}
                 </div>
-                 <div className="mt-6 flex justify-between">
-                  <button 
-                    className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                    onClick={goToPreviousStep}
-                  >
-                    Précédent
-                  </button>
-                  <button 
-                    className={`px-6 py-2 bg-[#e83e8c] text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] ${
-                      !isStepComplete() ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    onClick={goToNextStep}
-                    disabled={!isStepComplete()}
-                  >
-                    Continuer
-                  </button>
-                </div>
-                  
               </div>
             )}
             
             {/* Step 2: Date and Time Selection */}
-            {currentStep === 3 && selectedDoctor && (
+            {currentStep === 2 && selectedDoctor && (
               <div className="animate-fade-in-up">
                 <div className="bg-white rounded-xl shadow-soft p-6 mb-6">
                   <h2 className="text-xl font-semibold mb-4">Médecin sélectionné</h2>
@@ -383,7 +320,7 @@ const AppointmentBooking = () => {
             )}
             
             {/* Step 3: Patient Information */}
-            {currentStep === 4 && (
+            {currentStep === 3 && (
               <div className="animate-fade-in-up">
                 <div className="bg-white rounded-xl shadow-soft p-6">
                   <h2 className="text-xl font-semibold mb-4">Vos informations</h2>
@@ -488,7 +425,7 @@ const AppointmentBooking = () => {
             )}
             
             {/* Step 4: Confirmation */}
-            {currentStep === 5 && selectedDoctor && selectedDate && selectedTime && (
+            {currentStep === 4 && selectedDoctor && selectedDate && selectedTime && (
               <div className="animate-fade-in-up">
                 <div className="bg-white rounded-xl shadow-soft p-6">
                   <h2 className="text-xl font-semibold mb-4">Confirmer votre rendez-vous</h2>
