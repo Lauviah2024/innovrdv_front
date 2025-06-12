@@ -13,6 +13,8 @@ import Contact from "./pages/Contact";
 import ContactPage from "./pages/Contact";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/Profile";
+import { APP_ROUTES } from "./configs";
+import { PrivateOutlet } from "./lib";
 
 const queryClient = new QueryClient();
 
@@ -23,13 +25,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+
+
           <Route path="/" element={<AppointmentBooking />} />
-          <Route path="/doctors" element={<Doctors />} />
           <Route path="/appointment" element={<AppointmentBooking />} />
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/confirmation" element={<Confirmation />} />
-           <Route path="/contact" element={<ContactPage />} />
-           <Route path="/auth/login" element={<Login />} />
+
+          <Route path="/auth/login" element={<Login />} />
+
+          <Route element={<PrivateOutlet />}>
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

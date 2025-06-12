@@ -1,0 +1,55 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { PersistentStorage, StorageKeys } from "@/utils";
+import { API_ENDPOINTS, APP_ROUTES } from "@/configs";
+import { LoginPayload, RegisterPayload, User } from "@/models";
+import apiClient, { setAuthToken } from "@/lib/apiClient";
+
+export const useLogin = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const from = ((location.state as any)?.from.pathname as string) || "/";
+
+  useEffect(() => {
+    if (PersistentStorage.getData(StorageKeys.INNOV_TOKEN_KEY, false)) {
+      navigate(APP_ROUTES.ROOT.PATH);
+    }
+  }, []);
+
+  return useMutation({
+    mutationFn: async (data: LoginPayload) => {
+      const response = await apiClient.post(
+        `/${API_ENDPOINTS.AUTH.LOGIN}`,
+        data,
+      );
+      const token = response.data.access_token;
+
+      PersistentStorage.setData(
+        StorageKeys.INNOV_TOKEN_KEY,
+        response.data.access_token,
+      );
+
+      setAuthToken(token);
+
+      queryClient.invalidateQueries();
+      navigate(from ?? "/profile");
+      return response.data;
+    },
+  });
+};
+
+export const useRegister = () => {
+  return useMutation<User, Error, RegisterPayload>({
+    mutationFn: async (data) => {
+      const response = await apiClient.post(
+        `/${API_ENDPOINTS.AUTH.REGISTER}`,
+        data,
+      );
+      return response.data;
+    },
+  });
+};
