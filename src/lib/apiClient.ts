@@ -5,7 +5,7 @@ import { PersistentStorage, StorageKeys } from "@/utils";
 const apiClient = axios.create({
   baseURL: appConfig.INNOV_API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+ 'Content-Type': 'multipart/form-data'
   },
 });
 

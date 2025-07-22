@@ -22,21 +22,19 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (data: LoginPayload) => {
-      const response = await apiClient.post(
-        `/${API_ENDPOINTS.AUTH.LOGIN}`,
-        data,
-      );
+      const formData = new FormData();
+      formData.append("phone", data.phone);
+      formData.append("password", data.password);
+
+      const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, formData);
+
       const token = response.data.access_token;
-
-      PersistentStorage.setData(
-        StorageKeys.INNOV_TOKEN_KEY,
-        response.data.access_token,
-      );
-
+      PersistentStorage.setData(StorageKeys.INNOV_TOKEN_KEY, token);
       setAuthToken(token);
 
       queryClient.invalidateQueries();
       navigate(from ?? "/profile");
+
       return response.data;
     },
   });
@@ -45,10 +43,13 @@ export const useLogin = () => {
 export const useRegister = () => {
   return useMutation<User, Error, RegisterPayload>({
     mutationFn: async (data) => {
-      const response = await apiClient.post(
-        `/${API_ENDPOINTS.AUTH.REGISTER}`,
-        data,
-      );
+      const formData = new FormData();
+
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, formData);
       return response.data;
     },
   });

@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
     REGISTER: "/auth/register",
   },
 
-  SPECIALITIES:"/admin/specialities",
+  SPECIALITIES:"/specialities",
+  APPOINTEMENTS: "/admin/",
  
 };

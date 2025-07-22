@@ -7,6 +7,7 @@ import AppointmentCalendar from '@/components/AppointmentCalendar';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Footer from '@/components/Footer';
+import { useGetSpecialities } from '@/services/appointements';
 
 // Reusing the mock data from the Doctors page
 const doctorsMockData = [
@@ -111,6 +112,7 @@ const specialties = [
 ];
 
 const AppointmentBooking = () => {
+  const {data:speciality}=useGetSpecialities();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);

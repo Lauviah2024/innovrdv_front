@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-
 import {
-  User, Phone, Lock, Mail, Calendar,
-  Briefcase, MoveLeft, MoveRight
+  Phone, Lock, Mail, Calendar, Briefcase, MoveLeft, MoveRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLogin, useRegister } from '@/services';
@@ -12,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -36,19 +36,31 @@ const Login = () => {
     job: ''
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     loginMutation.mutate(loginForm);
   };
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (registerForm.password !== registerForm.password_confirm) {
       alert("Les mots de passe ne correspondent pas");
       return;
     }
-    registerMutation.mutate(registerForm);
+    registerMutation.mutate(registerForm, {
+      onSuccess: () => {
+        alert("Inscription réussie !");
+        setLoginForm({
+          phone: registerForm.phone,
+          password: registerForm.password
+        });
+      },
+      onError: (err: any) => {
+        alert(err?.response.message || "Erreur lors de l'inscription.");
+      }
+    });
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
@@ -72,34 +84,25 @@ const Login = () => {
             {/* Connexion */}
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="phone"
-                      value={loginForm.phone}
-                      onChange={(e) => setLoginForm({ ...loginForm, phone: e.target.value })}
-                      required
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="password">Mot de passe</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="password"
-                      type="password"
-                      value={loginForm.password}
-                      onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                      required
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-                <Button type="submit" disabled={loginMutation.isPending} className="w-full bg-gradient-to-r from-[#e83e8c] to-green-500">
+                <InputWithLabel
+                  label="Téléphone"
+                  value={loginForm.phone}
+                  onChange={(val) => setLoginForm({ ...loginForm, phone: val })}
+                  icon={<Phone />}
+                />
+                <InputWithLabel
+                  label="Mot de passe"
+                  type="password"
+                  value={loginForm.password}
+                  onChange={(val) => setLoginForm({ ...loginForm, password: val })}
+                  icon={<Lock />}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={loginMutation.isPending}
+                  className="w-full bg-gradient-to-r from-[#e83e8c] to-green-500"
+                >
                   {loginMutation.isPending ? "Connexion..." : "Se connecter"}
                 </Button>
               </form>
@@ -115,16 +118,16 @@ const Login = () => {
 
                 <InputWithLabel label="Nom d'utilisateur" value={registerForm.username} onChange={(v) => setRegisterForm({ ...registerForm, username: v })} />
                 <InputWithLabel label="Téléphone" value={registerForm.phone} onChange={(v) => setRegisterForm({ ...registerForm, phone: v })} icon={<Phone />} />
-                <InputWithLabel label="Email" value={registerForm.email} onChange={(v) => setRegisterForm({ ...registerForm, email: v })} icon={<Mail />} type="email" />
-                
+                <InputWithLabel label="Email" type="email" value={registerForm.email} onChange={(v) => setRegisterForm({ ...registerForm, email: v })} icon={<Mail />} />
+
                 <Label>Sexe</Label>
                 <Select value={registerForm.gender} onValueChange={(v) => setRegisterForm({ ...registerForm, gender: v })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner le sexe" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="masculin">Masculin</SelectItem>
-                    <SelectItem value="feminin">Féminin</SelectItem>
+                    <SelectItem value="Masculin">Masculin</SelectItem>
+                    <SelectItem value="Féminin">Féminin</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -133,7 +136,11 @@ const Login = () => {
                 <InputWithLabel label="Mot de passe" type="password" value={registerForm.password} onChange={(v) => setRegisterForm({ ...registerForm, password: v })} icon={<Lock />} />
                 <InputWithLabel label="Confirmer le mot de passe" type="password" value={registerForm.password_confirm} onChange={(v) => setRegisterForm({ ...registerForm, password_confirm: v })} icon={<Lock />} />
 
-                <Button type="submit" disabled={registerMutation.isPending} className="w-full bg-gradient-to-r from-green-500 to-[#e83e8c]">
+                <Button
+                  type="submit"
+                  disabled={registerMutation.isPending}
+                  className="w-full bg-gradient-to-r from-green-500 to-[#e83e8c]"
+                >
                   {registerMutation.isPending ? "Inscription..." : "S'inscrire"}
                 </Button>
               </form>
@@ -147,6 +154,7 @@ const Login = () => {
 
 export default Login;
 
+// Reutilisable pour les champs du formulaire
 const InputWithLabel = ({
   label,
   value,
