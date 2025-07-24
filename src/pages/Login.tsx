@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,7 +23,6 @@ const Login = () => {
   });
 
   const [registerForm, setRegisterForm] = useState({
-    username: '',
     first_name: '',
     last_name: '',
     phone: '',
@@ -116,7 +114,6 @@ const Login = () => {
                   <InputWithLabel label="Prénoms" value={registerForm.first_name} onChange={(v) => setRegisterForm({ ...registerForm, first_name: v })} />
                 </div>
 
-                <InputWithLabel label="Nom d'utilisateur" value={registerForm.username} onChange={(v) => setRegisterForm({ ...registerForm, username: v })} />
                 <InputWithLabel label="Téléphone" value={registerForm.phone} onChange={(v) => setRegisterForm({ ...registerForm, phone: v })} icon={<Phone />} />
                 <InputWithLabel label="Email" type="email" value={registerForm.email} onChange={(v) => setRegisterForm({ ...registerForm, email: v })} icon={<Mail />} />
 

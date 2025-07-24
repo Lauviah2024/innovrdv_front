@@ -28,7 +28,7 @@ export const useLogin = () => {
 
       const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, formData);
 
-      const token = response.data.access_token;
+      const token = response.data.data.token;
       PersistentStorage.setData(StorageKeys.INNOV_TOKEN_KEY, token);
       setAuthToken(token);
 

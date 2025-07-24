@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { PersistentStorage, StorageKeys } from '@/utils';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,12 +65,30 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link
+
+          {
+             !PersistentStorage.getData(
+                StorageKeys.INNOV_TOKEN_KEY
+              ) ?  (
+ <Link
             to="/auth/login"
             className="px-6 py-2 border border-[#e83e8c] text-[#e83e8c] rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
           >
             Se connecter
           </Link>
+              ):(
+                 <div
+            onClick={()=> {
+              localStorage.removeItem('_INNOV_TOKEN');
+              window.location.href= '/'
+            }}
+            className="px-6 py-2 border cursor-pointer rounded-full shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px]"
+          >
+            Se déconnecter
+          </div>
+              )
+          }
+         
          
          
         </div>
