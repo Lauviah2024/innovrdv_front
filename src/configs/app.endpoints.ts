@@ -5,6 +5,8 @@ export const API_ENDPOINTS = {
   },
 
   SPECIALITIES:"/config/specialities",
+  DOCTOR_SPEC: "/plannings/doctor-search",
+  DOCTORS: "/api/doctors",
   APPOINTEMENTS: "/admin/",
  
 };

@@ -7,91 +7,9 @@ import AppointmentCalendar from '@/components/AppointmentCalendar';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Footer from '@/components/Footer';
-import { useGetSpecialities } from '@/services/appointements';
+import { AppointmentPayload, useCreateAppointment, useGetDoctorById, useGetSpecialities, useGetSpecialitiesDoctors } from '@/services/appointements';
+import { toast } from 'sonner';
 
-// Reusing the mock data from the Doctors page
-const doctorsMockData = [
-  {
-    id: '1',
-    name: 'Dr. Marie Laurent',
-    specialty: 'Cardiologie',
-    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.8,
-    reviewCount: 124,
-    availability: 'Disponible aujourd\'hui',
-    specialtyId: 'cardiology'
-  },
-  {
-    id: '2',
-    name: 'Dr. Thomas Dupont',
-    specialty: 'Neurologie',
-    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.6,
-    reviewCount: 98,
-    availability: 'Disponible demain',
-    specialtyId: 'neurology'
-  },
-  {
-    id: '3',
-    name: 'Dr. Isabelle Moreau',
-    specialty: 'Médecine générale',
-    imageUrl: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.9,
-    reviewCount: 210,
-    availability: 'Disponible aujourd\'hui',
-    specialtyId: 'general'
-  },
-  {
-    id: '4',
-    name: 'Dr. Philippe Martin',
-    specialty: 'Pédiatrie',
-    imageUrl: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.7,
-    reviewCount: 156,
-    availability: 'Disponible dans 2 jours',
-    specialtyId: 'pediatrics'
-  },
-  {
-    id: '5',
-    name: 'Dr. Sophie Leroy',
-    specialty: 'Dermatologie',
-    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.5,
-    reviewCount: 87,
-    availability: 'Disponible aujourd\'hui',
-    specialtyId: 'dermatology'
-  },
-  {
-    id: '6',
-    name: 'Dr. Jean-François Dubois',
-    specialty: 'Psychiatrie',
-    imageUrl: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.7,
-    reviewCount: 113,
-    availability: 'Disponible demain',
-    specialtyId: 'psychiatry'
-  },
-  {
-    id: '7',
-    name: 'Dr. Claire Petit',
-    specialty: 'Cardiologie',
-    imageUrl: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.6,
-    reviewCount: 92,
-    availability: 'Disponible dans 3 jours',
-    specialtyId: 'cardiology'
-  },
-  {
-    id: '8',
-    name: 'Dr. Marc Bernard',
-    specialty: 'Médecine générale',
-    imageUrl: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80',
-    rating: 4.9,
-    reviewCount: 178,
-    availability: 'Disponible aujourd\'hui',
-    specialtyId: 'general'
-  },
-];
 
 // Steps for the booking process
 const steps = [
@@ -102,37 +20,41 @@ const steps = [
   { id: 5, name: 'Confirmation' }
 ];
 
-const specialties = [
-  { id: 'cardiology', name: 'Cardiologie' },
-  { id: 'neurology', name: 'Neurologie' },
-  { id: 'general', name: 'Médecine générale' },
-  { id: 'pediatrics', name: 'Pédiatrie' },
-  { id: 'dermatology', name: 'Dermatologie' },
-  { id: 'psychiatry', name: 'Psychiatrie' },
-];
+
 
 const AppointmentBooking = () => {
-  const {data:speciality}=useGetSpecialities();
+  const {data:specialties}=useGetSpecialities();
+  console.log(specialties)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedDoctor, setSelectedDoctor] = useState<typeof doctorsMockData[0] | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<typeof specialtiesDoctor.data[0] | null>(null);
   const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    reason: ''
+
+  const {data: specialtiesDoctor} = useGetSpecialitiesDoctors(selectedSpecialty)
+
+const [formData, setFormData] = useState({
+    appointment_user_firstname: '',
+    appointment_user_lastname: '',
+    appointment_user_gender: 'Masculin',
+    appointment_user_birthdate: '',
+    appointment_user_job: '',
+    appointment_user_phone: '',
+    email: '', // Gardé pour la complétude
+    appointment_user_notes: '',
+    appointment_type: 'myself',
   });
+
+    const { mutateAsync: createAppointment, isPending } = useCreateAppointment();
+
 
   // Load pre-selected doctor from URL params
   useEffect(() => {
     const doctorId = searchParams.get('doctor');
     if (doctorId) {
-      const doctor = doctorsMockData.find(d => d.id === doctorId);
+      const doctor = specialtiesDoctor?.data.find(d => d.id === doctorId);
       if (doctor) {
         setSelectedDoctor(doctor);
         setSelectedSpecialty(doctor.specialtyId);
@@ -147,7 +69,7 @@ const AppointmentBooking = () => {
     setCurrentStep(2);
   };
 
-  const handleDoctorSelect = (doctor: typeof doctorsMockData[0]) => {
+  const handleDoctorSelect = (doctor: typeof specialtiesDoctor.data[0]) => {
     setSelectedDoctor(doctor);
     setCurrentStep(3);
   };
@@ -157,7 +79,9 @@ const AppointmentBooking = () => {
     setSelectedTime(time);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -177,18 +101,52 @@ const AppointmentBooking = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/confirmation', { 
-      state: { 
-        doctor: selectedDoctor,
-        date: selectedDate,
-        time: selectedTime,
-        patient: formData
-      } 
-    });
-  };
 
+    // Trouver le nom de la spécialité à partir de l'ID
+    const specialtyName = specialties?.data.find(s => s.speciality_id === selectedSpecialty)?.speciality_name || '';
+    
+    // Formater la date et l'heure
+    const appointmentDateTime = format(selectedDate!, `yyyy-MM-dd'T'HH:mm:ss`);
+    
+    // Construire le payload final
+    const payload: AppointmentPayload = {
+      appointment_speciality: specialtyName,
+      appointment_doctor_id: selectedDoctor!.id,
+      appointment_slot: selectedTime!,
+      appointment_date_hour: appointmentDateTime,
+      appointment_type: formData.appointment_type as 'myself' | 'other',
+      appointment_user_lastname: formData.appointment_user_lastname,
+      appointment_user_firstname: formData.appointment_user_firstname,
+      appointment_user_gender: formData.appointment_user_gender,
+      appointment_user_birthdate: formData.appointment_user_birthdate,
+      appointment_user_job: formData.appointment_user_job,
+      appointment_user_phone: formData.appointment_user_phone,
+    };
+    
+    try {
+      // Appeler la mutation
+      await createAppointment(payload);
+      
+      // En cas de succès, rediriger vers la page de confirmation
+      navigate('/confirmation', { 
+        state: { 
+          doctor: selectedDoctor,
+          date: selectedDate,
+          time: selectedTime,
+          patient: formData
+        } 
+      });
+    } catch (error) {
+      // Gérer l'erreur en cas d'échec
+      toast.error(
+     'La prise de rendez-vous a échoué. Veuillez réessayer.',
+      );
+      console.error(error);
+    }
+  };
+  
   const isStepComplete = () => {
     switch (currentStep) {
       case 1:
@@ -198,7 +156,7 @@ const AppointmentBooking = () => {
       case 3:
         return selectedDate !== undefined && selectedTime !== undefined;
       case 4:
-        return formData.firstName && formData.lastName && formData.email && formData.phone;
+        return formData.appointment_user_firstname && formData.appointment_user_lastname && formData.email && formData.appointment_user_phone;
       default:
         return false;
     }
@@ -267,20 +225,20 @@ const AppointmentBooking = () => {
               <div className="bg-white rounded-xl shadow-soft p-6 animate-fade-in-up">
                 <h2 className="text-xl font-semibold mb-4">Choisissez une Spécialité</h2>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {specialties.map((specialty) => (
+                  {specialties && specialties?.data.map((specialty) => (
                     <div 
-                      key={specialty.id}
+                      key={specialty.speciality_id}
                       className={`cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
-                        selectedDoctor?.id === specialty.id 
+                        selectedDoctor?.speciality_id === specialty.speciality_id 
                           ? 'border-[#e83e8c] bg-clinic-secondary' 
                           : 'border-gray-200 hover:border-[#e83e8c]'
                       }`}
-                      onClick={() => handleSpecialtySelect(specialty.id)}
+                      onClick={() => handleSpecialtySelect(specialty.speciality_id)}
                     >
                       <div className="flex items-center space-x-3">
                         
                         <div>
-                          <div className="font-medium">{specialty.name}</div>
+                          <div className="font-medium">{specialty.speciality_name}</div>
                         </div>
                       </div>
                     </div>
@@ -293,11 +251,11 @@ const AppointmentBooking = () => {
               <div className="bg-white rounded-xl shadow-soft p-6 animate-fade-in-up">
                 <h2 className="text-xl font-semibold mb-4">Choisissez un médecin</h2>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {doctorsMockData.map((doctor) => (
+                  {specialtiesDoctor?.data.map((doctor) => (
                     <div 
-                      key={doctor.id}
+                      key={doctor.doctor_id}
                       className={`cursor-pointer p-4 rounded-lg border transition-all duration-200 ${
-                        selectedDoctor?.id === doctor.id 
+                        selectedDoctor?.doctor_id === doctor.doctor_id 
                           ? 'border-[#e83e8c] bg-clinic-secondary' 
                           : 'border-gray-200 hover:border-[#e83e8c]'
                       }`}
@@ -310,8 +268,8 @@ const AppointmentBooking = () => {
                           className="w-12 h-12 rounded-full object-cover"
                         />
                         <div>
-                          <div className="font-medium">{doctor.name}</div>
-                          <div className="text-sm text-gray-500">{doctor.specialty}</div>
+                          <div className="font-medium">{doctor.doctor_firstname} {doctor.doctor_lastname}</div>
+                          <div className="text-sm text-gray-500">{doctor.doctor_profile}</div>
                         </div>
                       </div>
                     </div>
@@ -347,12 +305,12 @@ const AppointmentBooking = () => {
                   <div className="flex items-center gap-4">
                     <img
                       src={selectedDoctor.imageUrl}
-                      alt={selectedDoctor.name}
+                      alt={`${selectedDoctor.doctor_lastname} ${selectedDoctor.doctor_firstname}`}
                       className="w-16 h-16 rounded-full object-cover"
                     />
                     <div>
-                      <div className="font-medium text-lg">{selectedDoctor.name}</div>
-                      <div className="text-gray-500">{selectedDoctor.specialty}</div>
+                      <div className="font-medium text-lg">{selectedDoctor.doctor_lastname} {selectedDoctor.doctor_firstname}</div>
+                      <div className="text-gray-500">{selectedDoctor.doctor_profile}</div>
                     </div>
                     <button 
                       className="ml-auto text-[#e83e8c] hover:underline"
@@ -394,35 +352,20 @@ const AppointmentBooking = () => {
                   <form onSubmit={(e) => { e.preventDefault(); goToNextStep(); }}>
                     <div className="grid md:grid-cols-2 gap-4 mb-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Prénom *</label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                          <input
-                            type="text"
-                            name="firstName"
-                            required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
-                            placeholder="Votre prénom"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                          <input
-                            type="text"
-                            name="lastName"
-                            required
-                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
-                            placeholder="Votre nom"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </div>
+                <label className="block text-sm font-medium">Date de naissance *</label>
+                <input type="date" name="appointment_user_birthdate" required className="..." value={formData.appointment_user_birthdate} onChange={handleInputChange} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Genre *</label>
+                <select name="appointment_user_gender" required className="..." value={formData.appointment_user_gender} onChange={handleInputChange}>
+                  <option>Masculin</option>
+                  <option>Féminin</option>
+                </select>
+              </div>
+               <div className="mb-6">
+              <label className="block text-sm font-medium">Profession</label>
+              <input type="text" name="appointment_user_job" className="..." value={formData.appointment_user_job} onChange={handleInputChange} />
+            </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                         <div className="relative">
@@ -448,7 +391,7 @@ const AppointmentBooking = () => {
                             required
                             className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                             placeholder="Votre numéro de téléphone"
-                            value={formData.phone}
+                            value={formData.appointment_user_phone}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -462,7 +405,7 @@ const AppointmentBooking = () => {
                         rows={4}
                         className="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#e83e8c] focus:border-transparent"
                         placeholder="Décrivez brièvement la raison de votre visite..."
-                        value={formData.reason}
+                        value={formData.appointment_user_notes}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -517,13 +460,13 @@ const AppointmentBooking = () => {
                     </div>
                     
                     <div className="mt-4 text-sm text-gray-600">
-                      <div>Patient: {formData.firstName} {formData.lastName}</div>
+                      <div>Patient: {formData.appointment_user_firstname} {formData.appointment_user_lastname}</div>
                       <div>Email: {formData.email}</div>
-                      <div>Téléphone: {formData.phone}</div>
-                      {formData.reason && (
+                      <div>Téléphone: {formData.appointment_user_phone}</div>
+                      {formData.appointment_user_notes && (
                         <div className="mt-2">
                           <div className="font-medium">Motif:</div>
-                          <p>{formData.reason}</p>
+                          <p>{formData.appointment_user_notes}</p>
                         </div>
                       )}
                     </div>
@@ -555,11 +498,12 @@ const AppointmentBooking = () => {
                       Précédent
                     </button>
                     <button 
-                      className="p-2 bg-[#e83e8c] text-sm text-white rounded-lg shadow-button transform transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-[1px] font-medium"
-                      onClick={handleSubmit}
-                    >
-                      Confirmer le rendez-vous
-                    </button>
+            className="..."
+            onClick={handleSubmit}
+            disabled={isPending} 
+          >
+            {isPending ? 'Confirmation en cours...' : 'Confirmer le rendez-vous'}
+          </button>
                   </div>
                 </div>
               </div>
